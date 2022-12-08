@@ -53,6 +53,10 @@ public class Shooter extends SubsystemBase {
     masterMotor.set(TalonFXControlMode.Velocity, rpm);
   }
 
+  public void Terminate(){
+    masterMotor.set(TalonFXControlMode.PercentOutput, 0);
+  }
+
   public int LookUpRPM(int POV){
     int rpmSet;
 

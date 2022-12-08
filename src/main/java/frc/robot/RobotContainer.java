@@ -8,11 +8,15 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.Collector.Collector_ACTIVATE;
 import frc.robot.commands.Drivetrain.Drive_ARCADE;
 import frc.robot.commands.Drivetrain.Drive_BRAKE;
+import frc.robot.commands.Indexer.Indexer_ACTIVATE;
 import frc.robot.commands.Shooter.Shooter_ACTIVE;
 import frc.robot.commands.Shooter.Shooter_IDLE;
+import frc.robot.subsystems.Collector;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Shooter;
 
 /**
@@ -29,10 +33,16 @@ public class RobotContainer {
   // Subsystems
   public static Drivetrain drivetrain;
   public static Shooter shooterSystem;
+  public static Collector collectorSystem;
+  public static Indexer indexerSystem;
 
   // Buttons
-  private JoystickButton shooterBinding;
   private JoystickButton brakeButton;
+
+  private JoystickButton shooterBinding;
+  private JoystickButton collectorCollect;
+  private JoystickButton collectorDump;
+  private JoystickButton indexerBinding;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -41,6 +51,8 @@ public class RobotContainer {
 
     drivetrain = new Drivetrain();
     shooterSystem = new Shooter();
+    collectorSystem = new Collector();
+    indexerSystem = new Indexer();
 
     drivetrain.setDefaultCommand(new Drive_ARCADE());
     shooterSystem.setDefaultCommand(new Shooter_IDLE());
@@ -56,11 +68,20 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    shooterBinding = new JoystickButton(operatorController, operatorController.getPOV());
-    shooterBinding.whileHeld(new Shooter_ACTIVE(), true);
-
     brakeButton = new JoystickButton(driverController, XboxController.Button.kB.value);
     brakeButton.whileHeld(new Drive_BRAKE());
+
+    shooterBinding = new JoystickButton(operatorController, operatorController.getPOV());
+    shooterBinding.whileHeld(new Shooter_ACTIVE());
+
+    collectorCollect = new JoystickButton(operatorController, XboxController.Button.kA.value);
+    collectorCollect.whileHeld(new Collector_ACTIVATE(false), true);
+
+    collectorDump = new JoystickButton(operatorController, XboxController.Button.kB.value);
+    collectorDump.whileHeld(new Collector_ACTIVATE(true), true);
+
+    indexerBinding = new JoystickButton(operatorController, XboxController.Axis.kRightTrigger.value);
+    indexerBinding.whileHeld(new Indexer_ACTIVATE(), true);
   }
 
   /**
