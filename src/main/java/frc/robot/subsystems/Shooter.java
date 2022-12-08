@@ -67,6 +67,8 @@ public class Shooter extends SubsystemBase {
         rpmSet = Constants.SHOOTER_SHOOTRPM_MID;
       case 180:
         rpmSet = Constants.SHOOTER_SHOOTRPM_HIGH;
+      case 270:
+        rpmSet = Constants.SHOOTER_SHOOTRPM_VERYHIGH;
       case -1:
         rpmSet = Constants.SHOOTER_IDLERPM;
       default:
