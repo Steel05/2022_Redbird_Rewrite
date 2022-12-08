@@ -2,17 +2,15 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.Drivetrain;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
 import frc.robot.RobotContainer;
 
-public class Shooter_ACTIVE extends CommandBase {
-  /** Creates a new Shooter_ACTIVE. */
-  public Shooter_ACTIVE() {
-    // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotContainer.shooterSystem);
+public class Drive_CURVE extends CommandBase {
+  /** Creates a new Drive_CURVE. */
+  public Drive_CURVE() {
+    addRequirements(RobotContainer.drivetrain);
   }
 
   // Called when the command is initially scheduled.
@@ -22,8 +20,7 @@ public class Shooter_ACTIVE extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    int targetRPM = RobotContainer.shooterSystem.LookUpRPM();
-    RobotContainer.shooterSystem.Shoot(Constants.SHOOTER_SHOOTRPM, false);
+    RobotContainer.drivetrain.CurveDrive(RobotContainer.driverController.getLeftY(), RobotContainer.driverController.getRightX(), RobotContainer.driverController.getRightBumper() || RobotContainer.driverController.getLeftBumper());
   }
 
   // Called once the command ends or is interrupted.

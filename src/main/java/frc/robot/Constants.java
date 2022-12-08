@@ -15,16 +15,30 @@ package frc.robot;
 public final class Constants {
     /* Controllers */
         // IDs
-    //public static final int CONTROLLER_DRIVER = 0;
-    public static final int CONTROLLER_OPERATOR = 0;
-        // Operator
-            // Axis IDs
-    public static final int OPERATOR_REVAXIS = 2;
+    public static final int CONTROLLER_DRIVER = 0;
+    public static final int CONTROLLER_OPERATOR = 1;
+
+    /* Drivetrain */
+        // IDs
+    public static final int DRIVETRAIN_LEFTMOTOR_ONE = 1;
+    public static final int DRIVETRAIN_LEFTMOTOR_TWO = 2;
+    public static final int DRIVETRAIN_LEFTMOTOR_THREE = 3;
+    public static final int DRIVETRAIN_RIGHTMOTOR_ONE = 4;
+    public static final int DRIVETRAIN_RIGHTMOTOR_TWO = 5;
+    public static final int DRIVETRAIN_RIGHTMOTOR_THREE = 6;
+        
+        // Control Values
+    public static final double DRIVETRAIN_RAMPTIME_SECONDS = 0.5;
 
     /* Shooter */
         // Motor IDs
     public static final int SHOOTER_MASTERMOTOR = 7;
     public static final int SHOOTER_FOLLOWERMOTOR = 8;
+
+        // Piston IDs
+    public static final int SHOOTER_HOODPISTON_ID = 14;
+    public static final int SHOOTER_HOODPISTON_CHANNEL_FORWARD = 0;
+    public static final int SHOOTER_HOODPISTON_CHANNEL_REVERSE = 1;
 
         // RPM
     public static final int SHOOTER_IDLERPM = 500;

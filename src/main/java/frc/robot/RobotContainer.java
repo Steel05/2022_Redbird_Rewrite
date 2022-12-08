@@ -5,12 +5,14 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.Shooter_ACTIVE;
-import frc.robot.commands.Shooter_IDLE;
+import frc.robot.commands.Drivetrain.Drive_ARCADE;
+import frc.robot.commands.Drivetrain.Drive_BRAKE;
+import frc.robot.commands.Shooter.Shooter_ACTIVE;
+import frc.robot.commands.Shooter.Shooter_IDLE;
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Shooter;
 
 /**
@@ -20,17 +22,27 @@ import frc.robot.subsystems.Shooter;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
-  public XboxController operatorController;
+  // Controllers
+  public static XboxController driverController;
+  public static XboxController operatorController;
 
+  // Subsystems
+  public static Drivetrain drivetrain;
   public static Shooter shooterSystem;
+
+  // Buttons
+  private JoystickButton shooterBinding;
+  private JoystickButton brakeButton;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    operatorController = new XboxController(0);
+    driverController = new XboxController(Constants.CONTROLLER_DRIVER);
+    operatorController = new XboxController(Constants.CONTROLLER_OPERATOR);
 
+    drivetrain = new Drivetrain();
     shooterSystem = new Shooter();
 
+    drivetrain.setDefaultCommand(new Drive_ARCADE());
     shooterSystem.setDefaultCommand(new Shooter_IDLE());
 
     // Configure the button bindings
@@ -44,7 +56,11 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    //new JoystickButton(operatorController, XboxController.Axis.kRightTrigger).whileHeld(new Shooter_ACTIVE(), true);
+    shooterBinding = new JoystickButton(operatorController, operatorController.getPOV());
+    shooterBinding.whileHeld(new Shooter_ACTIVE(), true);
+
+    brakeButton = new JoystickButton(driverController, XboxController.Button.kB.value);
+    brakeButton.whileHeld(new Drive_BRAKE());
   }
 
   /**
