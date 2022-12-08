@@ -15,6 +15,7 @@ import frc.robot.commands.Indexer.Indexer_ACTIVATE;
 import frc.robot.commands.Shooter.Shooter_ACTIVE;
 import frc.robot.commands.Shooter.Shooter_IDLE;
 import frc.robot.subsystems.Collector;
+import frc.robot.subsystems.Compress;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Shooter;
@@ -35,10 +36,10 @@ public class RobotContainer {
   public static Shooter shooterSystem;
   public static Collector collectorSystem;
   public static Indexer indexerSystem;
+  public static Compress compressorSystem;
 
   // Buttons
   private JoystickButton brakeButton;
-
   private JoystickButton shooterBinding;
   private JoystickButton collectorCollect;
   private JoystickButton collectorDump;
@@ -53,6 +54,7 @@ public class RobotContainer {
     shooterSystem = new Shooter();
     collectorSystem = new Collector();
     indexerSystem = new Indexer();
+    compressorSystem = new Compress();
 
     drivetrain.setDefaultCommand(new Drive_ARCADE());
     shooterSystem.setDefaultCommand(new Shooter_IDLE());

@@ -72,4 +72,11 @@ public final class Constants {
 
         // Control Values
     public static final double INDEXER_MOTOR_PERCENTSPEED = 0.7;
+
+    /* Compressor */
+        // IDs
+    public static final int COMPRESSOR_ID = 14;
+        // Control Values
+    public static final double COMPRESSOR_RANGE_MIN = 60;
+    public static final double COMPRESSOR_RANGE_MAX = 120;
 }
