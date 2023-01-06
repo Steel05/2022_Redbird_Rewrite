@@ -22,7 +22,6 @@ public class Shooter extends SubsystemBase {
   
   /** Creates a new Shooter. */
   public Shooter() {
-    
     hoodPiston = new DoubleSolenoid(Constants.SHOOTER_HOODPISTON_ID, PneumaticsModuleType.REVPH, Constants.SHOOTER_HOODPISTON_CHANNEL_FORWARD, Constants.SHOOTER_HOODPISTON_CHANNEL_REVERSE);
 
     masterMotor = new WPI_TalonFX(Constants.SHOOTER_MASTERMOTOR);
@@ -32,7 +31,7 @@ public class Shooter extends SubsystemBase {
 
     masterMotor.setNeutralMode(NeutralMode.Coast);
     followerMotor.setNeutralMode(NeutralMode.Coast);
-
+    
     masterMotor.config_kP(0, Constants.SHOOTER_kP);
     masterMotor.config_kI(0, Constants.SHOOTER_kI);
     masterMotor.config_kD(0, Constants.SHOOTER_kD);
@@ -54,7 +53,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public void Terminate(){
-    masterMotor.set(TalonFXControlMode.PercentOutput, 0);
+    masterMotor.set(TalonFXControlMode.Velocity, Constants.SHOOTER_IDLERPM);
   }
 
   public int LookUpRPM(int POV){

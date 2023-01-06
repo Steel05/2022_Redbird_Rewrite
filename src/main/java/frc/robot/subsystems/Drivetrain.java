@@ -6,14 +6,18 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Drivetrain extends SubsystemBase {
-  
+
   WPI_TalonFX leftMotorOne;
   WPI_TalonFX leftMotorTwo;
   WPI_TalonFX leftMotorThree;
@@ -26,6 +30,12 @@ public class Drivetrain extends SubsystemBase {
   MotorControllerGroup rightMotors;
 
   DifferentialDrive differentialDrive;
+
+  DifferentialDriveKinematics kinematics;
+
+  AHRS gyro;
+
+  DifferentialDriveOdometry odometry;
 
   public Drivetrain() {
     leftMotorOne = new WPI_TalonFX(Constants.DRIVETRAIN_LEFTMOTOR_ONE);
@@ -58,6 +68,14 @@ public class Drivetrain extends SubsystemBase {
     leftMotors.setInverted(true);
 
     differentialDrive = new DifferentialDrive(leftMotors, rightMotors);
+
+    kinematics = new DifferentialDriveKinematics(Units.inchesToMeters(Constants.DRIVETRAIN_CHASSIS_WIDTHINCHES));
+
+    gyro = new AHRS();
+
+    odometry = new DifferentialDriveOdometry(gyro.getRotation2d());
+
+    ResetEncoders();
   }
 
   public void ArcadeDrive(double speed, double turnBy){
@@ -66,6 +84,62 @@ public class Drivetrain extends SubsystemBase {
 
   public void CurveDrive(double speed, double turnBy, boolean turnInPlace){
     differentialDrive.curvatureDrive(speed, turnBy, turnInPlace);
+  }
+
+  public void ResetEncoders(){
+    leftMotorOne.getSensorCollection().setIntegratedSensorPosition(0, 0);
+    leftMotorTwo.getSensorCollection().setIntegratedSensorPosition(0, 0);
+    leftMotorThree.getSensorCollection().setIntegratedSensorPosition(0, 0);
+
+    rightMotorOne.getSensorCollection().setIntegratedSensorPosition(0, 0);
+    rightMotorTwo.getSensorCollection().setIntegratedSensorPosition(0, 0);
+    rightMotorThree.getSensorCollection().setIntegratedSensorPosition(0, 0);
+  }
+  
+  public void ResetEncoders(double resetValue){
+    leftMotorOne.getSensorCollection().setIntegratedSensorPosition(resetValue, 0);
+    leftMotorTwo.getSensorCollection().setIntegratedSensorPosition(resetValue, 0);
+    leftMotorThree.getSensorCollection().setIntegratedSensorPosition(resetValue, 0);
+
+    rightMotorOne.getSensorCollection().setIntegratedSensorPosition(resetValue, 0);
+    rightMotorTwo.getSensorCollection().setIntegratedSensorPosition(resetValue, 0);
+    rightMotorThree.getSensorCollection().setIntegratedSensorPosition(resetValue, 0);
+  }
+
+  public double GetInchesTraveled(){
+    double rotations = GetEncoderAverage();
+    rotations *= Constants.DRIVETRAIN_CHASSIS_GEARING_MOTORTOWHEEL;
+
+    return rotations * Constants.DRIVETRAIN_CHASSIS_WHEEL_CIRCUMFRENCEINCHES;
+  }
+
+  public double GetEncoderAverage(){
+    double sum = 0;
+
+    sum += GetLeftEncoders();
+    sum += GetRightEncoders();
+
+    return sum / 2;
+  }
+
+  public double GetRightEncoders(){
+    double sum = 0;
+    
+    sum += rightMotorOne.getSelectedSensorPosition();
+    sum += rightMotorTwo.getSelectedSensorPosition();
+    sum += rightMotorThree.getSelectedSensorPosition();
+
+    return sum / 3;
+  }
+
+  public double GetLeftEncoders(){
+    double sum = 0;
+    
+    sum += leftMotorOne.getSelectedSensorPosition();
+    sum += leftMotorTwo.getSelectedSensorPosition();
+    sum += leftMotorThree.getSelectedSensorPosition();
+
+    return sum / 3;
   }
 
   public void Brake(boolean brake){

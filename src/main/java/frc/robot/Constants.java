@@ -26,9 +26,17 @@ public final class Constants {
     public static final int DRIVETRAIN_RIGHTMOTOR_ONE = 4;
     public static final int DRIVETRAIN_RIGHTMOTOR_TWO = 5;
     public static final int DRIVETRAIN_RIGHTMOTOR_THREE = 6;
+    public static final int DRIVETRAIN_GYRO_ID = 0;
         
+        // Chassis Values
+    public static final double DRIVETRAIN_CHASSIS_WIDTHINCHES = 24;
+    public static final double DRIVETRAIN_CHASSIS_GEARING_MOTORTOWHEEL = 6.81;
+    public static final double DRIVETRAIN_CHASSIS_WHEEL_RADIUSINCHES = 3;
+    public static final double DRIVETRAIN_CHASSIS_WHEEL_CIRCUMFRENCEINCHES = DRIVETRAIN_CHASSIS_WHEEL_RADIUSINCHES * 3.141592653589;
+
         // Control Values
     public static final double DRIVETRAIN_RAMPTIME_SECONDS = 0.5;
+    public static final double DRIVETRAIN_AUTO_PERCENTSPEED = 0.5;
 
     /* Shooter */
         // Motor IDs

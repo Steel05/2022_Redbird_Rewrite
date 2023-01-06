@@ -8,7 +8,9 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.commands.Collector.Collector_ACTIVATE;
+import frc.robot.commands.Compressor.Compress_ACTIVE;
 import frc.robot.commands.Drivetrain.Drive_ARCADE;
 import frc.robot.commands.Drivetrain.Drive_BRAKE;
 import frc.robot.commands.Indexer.Indexer_ACTIVATE;
@@ -40,10 +42,13 @@ public class RobotContainer {
 
   // Buttons
   private JoystickButton brakeButton;
-  private JoystickButton shooterBinding;
   private JoystickButton collectorCollect;
   private JoystickButton collectorDump;
   private JoystickButton indexerBinding;
+  private POVButton upButton;
+  private POVButton rightButton;
+  private POVButton downButton;
+  private POVButton leftButton;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -58,6 +63,9 @@ public class RobotContainer {
 
     drivetrain.setDefaultCommand(new Drive_ARCADE());
     shooterSystem.setDefaultCommand(new Shooter_IDLE());
+    compressorSystem.setDefaultCommand(new Compress_ACTIVE());
+
+    drivetrain.ResetEncoders();
 
     // Configure the button bindings
     configureButtonBindings();
@@ -73,8 +81,17 @@ public class RobotContainer {
     brakeButton = new JoystickButton(driverController, XboxController.Button.kB.value);
     brakeButton.whileHeld(new Drive_BRAKE());
 
-    shooterBinding = new JoystickButton(operatorController, operatorController.getPOV());
-    shooterBinding.whileHeld(new Shooter_ACTIVE());
+    upButton = new POVButton(operatorController, 0);
+    upButton.whileHeld(new Shooter_ACTIVE(), true);
+
+    rightButton = new POVButton(operatorController, 90);
+    rightButton.whileHeld(new Shooter_ACTIVE(), true);
+
+    downButton = new POVButton(operatorController, 180);
+    downButton.whileHeld(new Shooter_ACTIVE(), true);
+
+    leftButton = new POVButton(operatorController, 270);
+    leftButton.whileHeld(new Shooter_ACTIVE(), true);
 
     collectorCollect = new JoystickButton(operatorController, XboxController.Button.kA.value);
     collectorCollect.whileHeld(new Collector_ACTIVATE(false), true);
